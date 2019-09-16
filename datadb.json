@@ -1,0 +1,68 @@
+{
+  "posts": [
+    {
+      "computer": "Mine",
+      "game": "hello",
+      "fps": "7",
+      "cputemp": "7",
+      "gputemp": "7",
+      "username": "Andrew"
+    },
+    {
+      "computer": "Mine",
+      "game": "Skyrim",
+      "fps": "75",
+      "cputemp": "50",
+      "gputemp": "43",
+      "username": "Andrew"
+    },
+    {
+      "computer": "Mine",
+      "game": "Skyrim",
+      "fps": "67",
+      "cputemp": "47",
+      "gputemp": "40",
+      "username": "Andrew"
+    },
+    {
+      "computer": "Peters",
+      "game": "Minecraft",
+      "fps": "100",
+      "cputemp": "25",
+      "gputemp": "15",
+      "username": "Andrew"
+    },
+    {
+      "computer": "Peters",
+      "game": "Minecraft",
+      "fps": "150",
+      "cputemp": "25",
+      "gputemp": "25",
+      "username": "Andrew"
+    },
+    {
+      "computer": "Meatballs Computer",
+      "game": "Skyrim",
+      "fps": "45",
+      "cputemp": "20",
+      "gputemp": "30",
+      "username": "Meatball"
+    },
+    {
+      "computer": "Meatballs Computer",
+      "game": "23",
+      "fps": "80",
+      "cputemp": "87",
+      "gputemp": "76",
+      "username": "Meatball"
+    },
+    {
+      "computer": "Lasagnas Computer",
+      "game": "Lasagna Game",
+      "fps": "45",
+      "cputemp": "40",
+      "gputemp": "40",
+      "username": "Meatball"
+    }
+  ]
+}
