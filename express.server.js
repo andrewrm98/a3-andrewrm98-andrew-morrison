@@ -44,12 +44,8 @@ userdb.defaults({ users: [] })
   .write()
 
 // Set some defaults (required if your JSON file is empty)
-datadb.defaults({ posts: [] })
+datadb.defaults({ posts: [], count: 0 })
   .write()
-
-const appdata = [
-    { 'computer': 'Example', 'game': 'Skyrim', 'fps': '60', 'cputemp':50, 'gputemp':55 }
-  ]
 
   let credential = ''
 
@@ -67,53 +63,57 @@ app.get('/redirect-signup', (req, res) => res.sendFile(__dirname + '/public/sign
 
 // GET request for the table-contents
 app.get('/table-contents', function (req, res) { 
+  console.log(req.user)
     if( credential != '') {
-        console.log(req.user)
-        console.log(JSON.stringify(datadb.get('posts')
-                                         .filter( { username: credential } )
-                                         .values()))
         res.send(JSON.stringify(datadb.get('posts')
                                       .filter( { username: credential } )
                                       .values()))
     }
     else {
-        console.log(JSON.stringify(datadb.get('posts').values()))
         res.send(JSON.stringify(datadb.get('posts').values()))
     }
+})
+
+// POST request to delete a row
+app.post('/deleterow', function(req, res) {
+  let deleteID = req.body
+  datadb.get('posts').remove({ id: deleteID.id }).write()
+
+  res.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
+  res.end()
+})
+
+// POST request to modify a row
+app.post('/modifyrow', function(req, res) {
+  let body = req.body
+  datadb.get('posts').find({ id: body.id }).assign({ computer: body.computer, game: body.game, fps: body.fps, gputemp: body.gputemp, cputemp: body.cputemp }).write()
+
+  res.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
+  res.end()
 })
 
 // POST request for signing out
 app.post('/signout', function(req, res) {
     req.session.destroy()
     credential = ''
-    
     res.redirect("/public/login.html")
-    res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    //res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     res.end()
 })
 
 // POST request for the table information
 app.post('/submit', function(req, res) {
-    dataString = ''
-
-    req.on('data', function(data) {
-        dataString += data
-    })
-
-    req.on('end', function() {
-        if(credential != '') {
-        let j = JSON.parse(dataString)
-        j.username = credential
-        datadb.get('posts')
-              .push(j)
-              .write()
-    
-        console.log(appdata)
-        }
-
-        res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-        res.end()
-    })
+  if (credential != '') {
+    let j = req.body
+    datadb.update('count', n => n + 1).write()
+    j.username = credential
+    j.id = datadb.get('count').value()
+    datadb.get('posts')
+      .push(j)
+      .write()
+  }
+  res.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
+  res.end()
 })
 
 app.post('/login', passport.authenticate('local', {
@@ -127,24 +127,17 @@ app.post('/login', passport.authenticate('local', {
 
 // POST request for logging in
 app.post('/signup', function(req, res) {
-    dataString = ''
+  const body = req.body
+  let userAttempt = body.username
+  let passAttempt = body.password
 
-    req.on('data', function(data) {
-        dataString += data
-    })
+  // Add a post
+  userdb.get('users')
+    .push({ username: userAttempt, password: passAttempt })
+    .write()
 
-    req.on('end', function () {
-        let userAttempt = JSON.parse(dataString).username
-        let passAttempt = JSON.parse(dataString).password
-
-        // Add a post
-        userdb.get('users')
-            .push({ username: userAttempt, password: passAttempt })
-            .write()
-
-        res.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
-        res.end()
-    })
+  res.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
+  res.end()
 })
 
   // all authentication requests in passwords assume that your client
@@ -184,7 +177,6 @@ passport.use(new Local(myLocalStrategy))
     '/login',
     passport.authenticate( 'local' ),
     function( req, res ) {
-      console.log( 'user:', req.user )
       res.json({ status:true })
     }
   )

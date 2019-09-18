@@ -40,6 +40,7 @@ const signup = function () {
     fetch('/signup', {
         method: 'POST',
         credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body
     })
         .then(function (response) {

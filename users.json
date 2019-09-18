@@ -9,6 +9,10 @@
     {
       "username": "Meatball",
       "password": "m"
+    },
+    {
+      "username": "Tom",
+      "password": "t"
     }
   ]
 }

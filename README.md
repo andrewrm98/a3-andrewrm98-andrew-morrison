@@ -5,7 +5,7 @@ http://a3-andrewrm98.glitch.me
 
 - The goal of this application is to provide an easy way to track your PC's performance over time and give feedback on how it compares to other PCs
 - The biggest challenge was getting express and cookies to work
-- I also struggled getting the tables to allow for modification and deletion. They do in fact allow this (just click on a cell to edit it, and the rightmost column with the x in it for deleting the row), but unfortunately I ran out of time and was not able to get this to persist to the database. I am not sure if that is necessarily required, but is definitely something I want to add in the future
+- I also struggled getting the tables to allow for modification and deletion. They do allow this now (just click on a cell to edit it, and the rightmost column with the x in it for deleting the row)
 - I used lowdb since it was simple and lightweight
 - I used an authentication based off of my own user database because it made sense to me
 - I used Bulma and Tabulator for CSS. Bulma provides a lot of CSS classes for you and made styling very quick and simple. Tabulator takes care of my tables and makes them clean and even provides styling for them as well.
